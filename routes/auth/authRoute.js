@@ -11,7 +11,7 @@ const authModel = require('./authModel');
 
 module.exports = router;
 
-router.post('/register', checkCreds, duplicatedCredentials, async (req, res) => {
+router.post('/register', checkCreds, checkDoubleCreds, async (req, res) => {
     let user = req.body;
     const hash = bcrypt.hashSync(user.password, 10);
     user.password = hash;
@@ -23,7 +23,7 @@ router.post('/register', checkCreds, duplicatedCredentials, async (req, res) => 
         res.status(201).json({username: addedUser.username, id: addedUser.id, token})
     }
     catch {
-        res.status(500).json({"errorMessage": "That was a problem registering"})
+        res.status(500).json({"errorMessage": "Server error. Try again."})
     }
 })
 
@@ -41,15 +41,9 @@ router.post('/login', async (req, res) => {
         }
     }
     catch {
-        res.status(500).json({"errorMessage": "That was a problem loggin in"})
+        res.status(500).json({"errorMessage": "Server error. Try again."})
     }
 })
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*                                           MIDDLEWARE                                                  */
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 //Middleware that ensures creds are given in register
@@ -63,10 +57,7 @@ function checkCreds(req, res, next) {
     }
 }
 
-/****************************************************************************/
-/*                      Check for duplicate credentials                     */
-/****************************************************************************/
-async function duplicatedCredentials(req, res, next) {
+async function checkDoubleCreds(req, res, next) {
     const {username, email}= req.body;
 
     try {
@@ -74,14 +65,14 @@ async function duplicatedCredentials(req, res, next) {
         let user2 = await authModel.findBy({email});
 
         if (user1 || user2) {
-            res.status(405).json({errorMessage: "duplicated credential(s)"})
+            res.status(405).json({errorMessage: "This info is already in the database - try again."})
         }
         else {
             next()
         }
     }
     catch {
-        res.status(500).json({"errorMessage": "That was a problem checking your credentials"})
+        res.status(500).json({"errorMessage": "Server error."})
     }
 }
 
