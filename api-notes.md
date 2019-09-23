@@ -104,6 +104,10 @@ res = {
 
 DELETE `/account` (remove artist account from database)
 
+POST `/entries/:id/like` (like a post)
+
+DELETE `/entries/:id/like` (unlike a post)
+
 # TODO
 
 - how are votes going to work?
