@@ -11,7 +11,7 @@ const authModel = require('./authModel');
 
 module.exports = router;
 
-router.post('/register', checkCreds, checkDoubleCreds, async (req, res) => {
+router.post('/register', checkCreds, async (req, res) => {
     let user = req.body;
     const hash = bcrypt.hashSync(user.password, 10);
     user.password = hash;
@@ -19,19 +19,19 @@ router.post('/register', checkCreds, checkDoubleCreds, async (req, res) => {
 
     try {
         const addedUser = await authModel.add(user);
-        token = generateToken(addedUser);
-        res.status(201).json({username: addedUser.username, id: addedUser.id, token})
+        res.status(201).json({username: addedUser.username, id: addedUser.id})
     }
-    catch {
-        res.status(500).json({"errorMessage": "Server error. Try again."})
+    catch(err) {
+        console.log(err);
+        res.status(500).json({"errorMessage": "Registration failed. Server error. Try again."})
     }
 })
 
 router.post('/login', async (req, res) => {
-    const {email, password} = req.body;
+    const {username, password} = req.body;
 
     try {
-        const user = await authModel.findBy({email})
+        const user = await authModel.findBy({username})
         if(user && bcrypt.compareSync(password, user.password)) {
             token = generateToken(user);
             res.status(200).json({username: user.username, id: user.id, token})
@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 //Middleware that ensures creds are given in register
 function checkCreds(req, res, next) {
     const body = req.body;
-    if(body.username && body.email && body.password) {
+    if(body.username && body.password) {
         next()
     }
     else {
@@ -57,23 +57,5 @@ function checkCreds(req, res, next) {
     }
 }
 
-async function checkDoubleCreds(req, res, next) {
-    const {username, email}= req.body;
-
-    try {
-        let user1 = await authModel.findBy({username});
-        let user2 = await authModel.findBy({email});
-
-        if (user1 || user2) {
-            res.status(405).json({errorMessage: "This info is already in the database - try again."})
-        }
-        else {
-            next()
-        }
-    }
-    catch {
-        res.status(500).json({"errorMessage": "Server error."})
-    }
-}
 
 module.exports = router;
