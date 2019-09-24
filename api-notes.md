@@ -68,7 +68,9 @@ res = {
   "entries": [
     {
       "id": "(number) globally unique entry ID number",
-      "url": "url for the image"
+      "url": "url for the image",
+      "artist",
+      "title"
     }
   ]
 }
@@ -92,6 +94,7 @@ res = {
 ```js
 res = {
   "id": "(number) ID number for the artist/user"
+  "username": "unique artist name",
   "entries": [
     {
       "id": "(number) globally unique entry ID number",
