@@ -88,7 +88,7 @@ res = {
 
 *DELETE `/entries/:id` (delete a single entry)
 
-*GET `/artist/:id` (get all entries for a given artist)
+*GET `/artists/:id` (get all entries for a given artist)
 ```js
 res = {
   "id": "(number) ID number for the artist/user"

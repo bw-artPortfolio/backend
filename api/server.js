@@ -5,6 +5,11 @@ server.use(express.json()); ////
 const cors = require('cors');
 server.use(cors());
 
+// routes
+
+const artistRoute = require('../routes/artistRoute');
+server.use('/api/artists', artistRoute);
+
 //Sanity check
 server.get('/', (req, res) => {
     res.status(200).send("Server is responding.");
