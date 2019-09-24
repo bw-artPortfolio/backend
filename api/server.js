@@ -7,8 +7,7 @@ server.use(cors());
 
 // routes
 
-//// not functioning yet
-// server.use('/api/artists', require('../routes/artistRoute'));
+server.use('/api/artists', require('../routes/artistRoute'));
 
 //Sanity check
 server.get('/', (req, res) => {
@@ -23,10 +22,10 @@ const artistModel = require('../database/artistModel');
 
 server.post('/api/register', checkCreds, async (req, res) => {
     const { username, password } = req.body;
-    const hash = bcrypt.hashSync(user.password, 10);
+    const hash = bcrypt.hashSync(password, 10);
     const validUser = { username, password: hash };
     try {
-        const addedUser = await artistModel.add(user);
+        const addedUser = await artistModel.add(validUser);
         res.status(201).json({
             username: addedUser.username,
             id: addedUser.id
