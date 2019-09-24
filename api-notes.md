@@ -20,6 +20,8 @@ note: An entry's ID number is unique among all entries from all artists, but is 
 
 # API
 
+(`*` means unfinished)
+
 POST `/register` (get an account for an artist)
 ```js
 body = {
@@ -40,7 +42,7 @@ res = {
 }
 ```
 
-POST `/entries` (art post)
+*POST `/entries` (art post)
 ```js
 body = {
   "url": "the url of the image",
@@ -52,7 +54,7 @@ res = {
 }
 ```
 
-PUT `/entries/:id` (modify art post)
+*PUT `/entries/:id` (modify art post)
 ```js
 body = {
   "url": "(optional)",
@@ -60,7 +62,7 @@ body = {
 }
 ```
 
-GET `/entries` (get limited info for all entries)
+*GET `/entries` (get limited info for all entries)
 ```js
 res = {
   "entries": [
@@ -72,7 +74,7 @@ res = {
 }
 ```
 
-GET `/entries/:id` (get all info for a single entry)
+*GET `/entries/:id` (get all info for a single entry)
 ```js
 res = {
   "id": "(number) globally unique entry ID number",
@@ -84,9 +86,9 @@ res = {
 }
 ```
 
-DELETE `/entries/:id` (delete a single entry)
+*DELETE `/entries/:id` (delete a single entry)
 
-GET `/artist/:id` (get all entries for a given artist)
+*GET `/artist/:id` (get all entries for a given artist)
 ```js
 res = {
   "id": "(number) ID number for the artist/user"
@@ -102,12 +104,8 @@ res = {
 }
 ```
 
-DELETE `/account` (remove artist account from database)
+*DELETE `/account` (remove artist account from database)
 
-POST `/entries/:id/like` (like a post)
+*POST `/entries/:id/like` (like a post)
 
-DELETE `/entries/:id/like` (unlike a post)
-
-# TODO
-
-- how are votes going to work?
+*DELETE `/entries/:id/like` (unlike a post)
