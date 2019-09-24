@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const secrets = require('./secrets');
+const secrets = require('../config/secrets');
 
 
 
@@ -11,11 +11,11 @@ function generateToken(user) {
       username: user.username
     };
 
-  
+
     const options = {
       expiresIn: '1d',
     };
-  
+
     return jwt.sign(payload, secrets.jwtSecret, options);
   }
 
