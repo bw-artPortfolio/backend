@@ -7,8 +7,8 @@ server.use(cors());
 
 // routes
 
-const artistRoute = require('../routes/artistRoute');
-server.use('/api/artists', artistRoute);
+//// not functioning yet
+// server.use('/api/artists', require('../routes/artistRoute'));
 
 //Sanity check
 server.get('/', (req, res) => {
