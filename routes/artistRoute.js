@@ -9,9 +9,18 @@ router.get('/:id', async (req, res) => {
         const { id, username } = await artists.findBy({ id });
         const userEntries = await entries.byUser(id);
         const { id: u, username_id, description, title, imgURL, votes} = userEntries;
-        const strippedEntries = userEntries.map(e => {
-            const { id, }
-            return 
+        const strippedEntries = userEntries.map(({ id, imgURL, title}) => {
+            return {
+                id,
+                url: imgURL,
+                title
+            };
+        });
+        res.status(200).json({
+            id,
+            username,
+            entries: strippedEntries,
+            likes: 'unimplemented for now'
         });
     }
     catch (err) {
@@ -19,13 +28,6 @@ router.get('/:id', async (req, res) => {
             { message: 'failed to load artist info from database'}
         );
     }
-    artists.findBy({ id })
-        .then(artist => {
-            const { id, username } = artist;
-            res.status(200).json();
-        })
-        .catch();
-    res.status(200).json({ route: req.url, recieved: req.body });
 });
 
 module.exports = router;

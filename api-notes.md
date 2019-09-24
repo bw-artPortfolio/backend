@@ -22,7 +22,7 @@ note: An entry's ID number is unique among all entries from all artists, but is 
 
 (`*` means unfinished)
 
-POST `/register` (get an account for an artist)
+*POST `account/register` (get an account for an artist)
 ```js
 body = {
   username,
@@ -30,7 +30,29 @@ body = {
 }
 ```
 
-POST `/login`
+*POST `account/login`
+```js
+body = {
+  username,
+  password
+}
+res = {
+  "id": "(number) the ID number for the user",
+  "token": "authentication token for the session"
+}
+```
+
+*DELETE `/account` (remove artist account from database)
+
+DEPRECATED!! POST `/register` (get an account for an artist)
+```js
+body = {
+  username,
+  password
+}
+```
+
+DEPRECATED!! POST `/login`
 ```js
 body = {
   username,
@@ -69,8 +91,8 @@ res = {
     {
       "id": "(number) globally unique entry ID number",
       "url": "url for the image",
-      "artist",
-      "title"
+      "artistName": "name of the creator",
+      "title": "title of the image entry"
     }
   ]
 }
@@ -98,7 +120,8 @@ res = {
   "entries": [
     {
       "id": "(number) globally unique entry ID number",
-      "url": "url for the image"
+      "url": "url for the image",
+      "title": "title of image entry"
     }
   ]
   "likes": [
@@ -106,8 +129,6 @@ res = {
   ]
 }
 ```
-
-*DELETE `/account` (remove artist account from database)
 
 *POST `/entries/:id/like` (like a post)
 
