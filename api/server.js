@@ -22,11 +22,9 @@ const generateToken = require('../utils/generateToken');
 const artistModel = require('../database/artistModel');
 
 server.post('/api/register', checkCreds, async (req, res) => {
-    let user = req.body;
+    const { username, password } = req.body;
     const hash = bcrypt.hashSync(user.password, 10);
-    user.password = hash;
-    console.log(user);
-
+    const validUser = { username, password: hash };
     try {
         const addedUser = await artistModel.add(user);
         res.status(201).json({
