@@ -1,14 +1,14 @@
 const db = require('./dbConfig');
 
 function findBy(filter) {
-    return db('users').where(filter).first();
+    return db('artists').where(filter).first();
 }
 
-function add(user) {
+function add(artist) {
     console.log("in Model:");
-    return db('users').insert(user, 'id')
+    return db('artists').insert(artist, 'id')
         .then(ids => {
-            return db('users')
+            return db('artists')
                 .where({id: ids[0]})
                 .first();
             }
@@ -18,4 +18,4 @@ function add(user) {
 module.exports = {
     add,
     findBy,
-}
+};

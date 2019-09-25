@@ -76,15 +76,16 @@ res = {
 }
 ```
 
-*PUT `/entries/:id` (modify art post)
+PUT `/entries/:id` (modify art post)
 ```js
 body = {
   "url": "(optional)",
+  "title": "(optional)",
   "description": "(optional)"
 }
 ```
 
-*GET `/entries` (get limited info for all entries)
+GET `/entries` (get limited info for all entries)
 ```js
 res = {
   "entries": [
@@ -98,7 +99,7 @@ res = {
 }
 ```
 
-*GET `/entries/:id` (get all info for a single entry)
+GET `/entries/:id` (get all info for a single entry)
 ```js
 res = {
   "id": "(number) globally unique entry ID number",
@@ -106,7 +107,7 @@ res = {
   "artistName": "unique username of the creator of the entry",
   "artistId": "(number) the creator's ID number",
   "description": "a text description of the image",
-  "score": "(number) the total number of votes by artists"
+  "score": "(number) the total number of likes by artists"
 }
 ```
 
@@ -125,7 +126,7 @@ res = {
     }
   ]
   "likes": [
-    "(number) ID number of upvoted entry"
+    "(number) ID number of each entry liked by artist"
   ]
 }
 ```
