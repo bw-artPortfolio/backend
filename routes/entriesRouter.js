@@ -121,7 +121,7 @@ router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
     }
 })
 
-
+//Tested
 router.delete('/entries/:id', checkCreds, async (req, res) => {
 
     const {id} = req.params;
