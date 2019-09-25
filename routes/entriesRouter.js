@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const secrets = require('../config/secrets');
 
 const entryModel = require('../database/entryModel');
+const likeModel = require('../database/likeModel');
 
 router.get('/entries', async (req, res) => {
     try {
@@ -24,12 +25,40 @@ router.get('/entries', async (req, res) => {
     }
 });
 
+router.post('/entries/:id/like', checkCreds, async (req, res) => {
+    const artistId = req.user.id;
+    const entryId = req.params.id;
+
+    try {
+        const dbRes = await likeModel.like(artistId, entryId);
+        res.status(202).json({ message: `user has liked art entry ${entryId}`});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({errorMessage: 'failed to write to database'});
+    }
+});
+
+router.delete('/entries/:id/like', checkCreds, async (req, res) => {
+    console.log(req.user)
+    const artistId = req.user.id;
+    const entryId = req.params.id;
+
+    try {
+        const entry = await entryModel.findBy({ id: entryId });
+        const dbRes = await likeModel.unlike(artistId, entryId);
+        res.status(204).json({message: `user no longer likes art entry ${entryId}`});
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({errorMessage: 'failed to write to database'});
+    }
+});
 
 router.get('/entries/:id', async (req, res) => {
     const {id} = req.params;
     try {
         const entry = await entryModel.findBy({id});
         if(entry) {
+            const score = await likeModel.getScore(id);
             const formatted = {
                 id: entry.id,
                 url: entry.url,
@@ -37,7 +66,7 @@ router.get('/entries/:id', async (req, res) => {
                 artistId: entry.artist,
                 title: entry.title,
                 description: entry.description,
-                score: "unimplemented for now"
+                score
             };
             res.status(200).json(formatted);
         }
@@ -58,7 +87,6 @@ router.put('/entries/:id', checkCreds, async (req, res) => {
     const {id} = req.params;
     const changes = req.body;
     const user = req.user;
-    console.log(user)
 
     // if(changes.id || changes.id) {
     //     res.status(403).json({errorMessage: "Not allowed to change ids" })
@@ -117,7 +145,7 @@ router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
         const newEntry = await entryModel.add(entry, 'id');
         res.status(201).json({newEntry});
     }
-    catch {
+    catch (err) {
         res.status(500).json({"errorMessage": "Encountered issue adding your entry"})
     }
 })
@@ -142,7 +170,7 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
                         res.status(500).json({errorMessage: 'Entry does not exist'});
                     }
                 }
-                catch {
+                catch (err) {
                     res.status(500).json({errorMessage: "Encountered issue deleting the entry"});
                 }
             }
@@ -154,7 +182,7 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
             res.status(404).json({errorMessage: 'Entry does not exist'});
         }
     }
-    catch {
+    catch (err) {
         res.status(500).json({message: "There was a problem finding the entry"});
     }
 });

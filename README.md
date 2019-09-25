@@ -20,9 +20,7 @@ note: An entry's ID number is unique among all entries from all artists, but is 
 
 # API
 
-(`*` means unfinished)
-
-*POST `account/register` (get an account for an artist)
+POST `account/register` (get an account for an artist)
 ```js
 body = {
   username,
@@ -30,7 +28,7 @@ body = {
 }
 ```
 
-*POST `account/login`
+POST `account/login`
 ```js
 body = {
   username,
@@ -143,6 +141,6 @@ res = {
 }
 ```
 
-*POST `/entries/:id/like` (like a post)
+POST `/entries/:id/like` (like a post)
 
-*DELETE `/entries/:id/like` (unlike a post)
+DELETE `/entries/:id/like` (unlike a post)
