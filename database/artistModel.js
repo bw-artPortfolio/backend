@@ -15,7 +15,12 @@ function add(artist) {
         );
 }
 
+function findAll() {
+    return db('artists').select('id', 'username');
+}
+
 module.exports = {
     add,
     findBy,
+    findAll
 };
