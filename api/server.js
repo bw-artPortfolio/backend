@@ -6,7 +6,7 @@ const cors = require('cors');
 server.use(cors());
 
 
-const enteriesRouter = require('../routes/enteries/enteriesRouter');
+const enteriesRouter = require('../routes/entriesRouter');
 // routes
 server.use('/api', enteriesRouter);
 server.use('/api/artists', require('../routes/artistRoute'));

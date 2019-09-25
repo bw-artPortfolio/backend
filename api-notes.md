@@ -106,7 +106,7 @@ res = {
   "artistName": "unique username of the creator of the entry",
   "artistId": "(number) the creator's ID number",
   "description": "a text description of the image",
-  "score": "(number) the total number of votes by artists"
+  "score": "(number) the total number of likes by artists"
 }
 ```
 
@@ -125,7 +125,7 @@ res = {
     }
   ]
   "likes": [
-    "(number) ID number of upvoted entry"
+    "(number) ID number of each entry liked by artist"
   ]
 }
 ```
