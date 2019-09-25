@@ -9,7 +9,7 @@ const postModel = require('./enteriesModel');
 
 
 
-router.get('/posts', async (req, res) => {
+router.get('/entries', async (req, res) => {
     try {
         const posts = await postModel.findAll();
         res.status(200).json(posts);
@@ -20,7 +20,7 @@ router.get('/posts', async (req, res) => {
 })
 
 
-router.get('/posts/:id', async (req, res) => {
+router.get('/entries/:id', async (req, res) => {
     const {id} = req.params;
     try {
         const post = await postModel.findBy({id}); 
@@ -38,7 +38,7 @@ router.get('/posts/:id', async (req, res) => {
 
 
 
-router.put('/posts/:id', checkCreds, async (req, res) => {
+router.put('/entries/:id', checkCreds, async (req, res) => {
 
     const {id} = req.params;
     const changes = req.body;
@@ -84,7 +84,7 @@ router.put('/posts/:id', checkCreds, async (req, res) => {
     
 })
 
-router.post('/posts', validatePostInfo, checkCreds, async (req, res) => {
+router.post('/entries', validatePostInfo, checkCreds, async (req, res) => {
     const post = {
         username_id: req.user.username_id,
         imgURL: req.body.imgURL,
@@ -105,7 +105,7 @@ router.post('/posts', validatePostInfo, checkCreds, async (req, res) => {
 })
 
 
-router.delete('/posts/:id', checkCreds, async (req, res) => {
+router.delete('/entries/:id', checkCreds, async (req, res) => {
     
     const {id} = req.params;
     const usernameId = req.user.username_id;
@@ -143,31 +143,6 @@ router.delete('/posts/:id', checkCreds, async (req, res) => {
     
 });
 
-router.put('/posts/votes/:id', checkCreds, async (req, res) => {
-    const {id} = req.params;
-    const votes = req.body;
-
-    if(votes) {
-        try {
-            modifiedPost = await postModel.update({id}, votes)
-            if(modifiedPost) {
-                res.status(200).json({newCount: modifiedPost.votes});
-            }
-            else {
-                res.status(404).json({message: 'Post does not exist'});
-            }
-        }
-        catch {
-            res.status(500).json({message: "Unable to update post"});
-        }
-    }
-
-    else {
-        res.status(400).json({message: 'Error'});
-    }
-
-    
-})
 
 
 //Middleware to validate if post info is existing
