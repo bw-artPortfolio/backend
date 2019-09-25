@@ -40,7 +40,7 @@ res = {
 }
 ```
 
-*DELETE `/account` (remove artist account from database)
+DELETE `/account` (remove artist account from database)
 
 DEPRECATED!! POST `/register` (get an account for an artist)
 ```js
