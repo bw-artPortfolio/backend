@@ -8,12 +8,11 @@ router.get('/:id', async (req, res) => {
     const artistId = req.params.id;
     try {
         const { id, username } = await artists.findBy({ id: artistId });
-        const userEntries = await entries.byUser(id);
-        const { id: u, username_id, description, title, imgURL, votes} = userEntries;
-        const strippedEntries = userEntries.map(({ id, imgURL, title}) => {
+        const userEntries = await entries.byArtist(id);
+        const strippedEntries = userEntries.map(({ id, url, title}) => {
             return {
                 id,
-                url: imgURL,
+                url,
                 title
             };
         });

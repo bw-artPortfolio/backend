@@ -5,17 +5,17 @@ exports.seed = function(knex) {
     .then(function () {
       // Inserts seed entries
       return knex('likes').insert([
-          {user: 1, post: 2},
-          {user: 2, post: 3},
-          {user: 2, post: 4},
-          {user: 3, post: 4},
-          {user: 3, post: 5},
-          {user: 3, post: 6},
-          {user: 4, post: 5},
-          {user: 4, post: 6},
-          {user: 4, post: 7},
-          {user: 4, post: 1},
-          {user: 5, post: 6}
+          {artist: 1, entry: 2},
+          {artist: 2, entry: 3},
+          {artist: 2, entry: 4},
+          {artist: 3, entry: 4},
+          {artist: 3, entry: 5},
+          {artist: 3, entry: 6},
+          {artist: 4, entry: 5},
+          {artist: 4, entry: 6},
+          {artist: 4, entry: 7},
+          {artist: 4, entry: 1},
+          {artist: 5, entry: 6}
       ]);
     });
 };
