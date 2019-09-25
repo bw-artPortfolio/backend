@@ -64,7 +64,7 @@ res = {
 }
 ```
 
-*POST `/entries` (art post)
+POST `/entries` (art post)
 ```js
 body = {
   "url": "the url of the image",
@@ -73,15 +73,6 @@ body = {
 }
 res = {
   "id": "(number) the globally unique ID number for your entry"
-}
-```
-
-PUT `/entries/:id` (modify art post)
-```js
-body = {
-  "url": "(optional)",
-  "title": "(optional)",
-  "description": "(optional)"
 }
 ```
 
@@ -111,7 +102,28 @@ res = {
 }
 ```
 
-*DELETE `/entries/:id` (delete a single entry)
+PUT `/entries/:id` (modify art post)
+```js
+body = {
+  "url": "(optional)",
+  "title": "(optional)",
+  "description": "(optional)"
+}
+```
+
+DELETE `/entries/:id` (delete a single entry)
+
+GET `/artists` (get names of all artists)
+```js
+res = {
+  "artists": [
+    {
+      id,
+      username
+    }
+  ]
+}
+```
 
 GET `/artists/:id` (get all entries for a given artist)
 ```js

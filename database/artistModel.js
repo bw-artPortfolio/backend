@@ -15,12 +15,12 @@ function add(artist) {
         );
 }
 
-function findAll() {
+function findAllLimited() {
     return db('artists').select('id', 'username');
 }
 
 module.exports = {
     add,
     findBy,
-    findAll
+    findAllLimited
 };
