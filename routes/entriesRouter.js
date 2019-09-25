@@ -34,7 +34,7 @@ router.get('/entries/:id', async (req, res) => {
                 id: entry.id,
                 url: entry.url,
                 artistName: entry.username,
-                artistId: entry.id,
+                artistId: entry.artist,
                 title: entry.title,
                 description: entry.description,
                 score: "unimplemented for now"

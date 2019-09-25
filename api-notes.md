@@ -76,7 +76,7 @@ res = {
 }
 ```
 
-*PUT `/entries/:id` (modify art post)
+PUT `/entries/:id` (modify art post)
 ```js
 body = {
   "url": "(optional)",
@@ -85,7 +85,7 @@ body = {
 }
 ```
 
-*GET `/entries` (get limited info for all entries)
+GET `/entries` (get limited info for all entries)
 ```js
 res = {
   "entries": [
@@ -99,7 +99,7 @@ res = {
 }
 ```
 
-*GET `/entries/:id` (get all info for a single entry)
+GET `/entries/:id` (get all info for a single entry)
 ```js
 res = {
   "id": "(number) globally unique entry ID number",
