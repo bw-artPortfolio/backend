@@ -5,8 +5,10 @@ server.use(express.json()); ////
 const cors = require('cors');
 server.use(cors());
 
-// routes
 
+const enteriesRouter = require('../routes/enteries/enteriesRouter');
+// routes
+server.use('/api', enteriesRouter);
 server.use('/api/artists', require('../routes/artistRoute'));
 
 //Sanity check
