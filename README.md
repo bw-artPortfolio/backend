@@ -20,7 +20,9 @@ note: An entry's ID number is unique among all entries from all artists, but is 
 
 # API
 
-POST `/register` (get an account for an artist)
+(`*` means unfinished)
+
+*POST `account/register` (get an account for an artist)
 ```js
 body = {
   username,
@@ -28,7 +30,7 @@ body = {
 }
 ```
 
-POST `/login`
+*POST `account/login`
 ```js
 body = {
   username,
@@ -40,7 +42,29 @@ res = {
 }
 ```
 
-POST `/entries` (art post)
+*DELETE `/account` (remove artist account from database)
+
+DEPRECATED!! POST `/register` (get an account for an artist)
+```js
+body = {
+  username,
+  password
+}
+```
+
+DEPRECATED!! POST `/login`
+```js
+body = {
+  username,
+  password
+}
+res = {
+  "id": "(number) the ID number for the user",
+  "token": "authentication token for the session"
+}
+```
+
+*POST `/entries` (art post)
 ```js
 body = {
   "url": "the url of the image",
@@ -56,6 +80,7 @@ PUT `/entries/:id` (modify art post)
 ```js
 body = {
   "url": "(optional)",
+  "title": "(optional)",
   "description": "(optional)"
 }
 ```
@@ -66,7 +91,9 @@ res = {
   "entries": [
     {
       "id": "(number) globally unique entry ID number",
-      "url": "url for the image"
+      "url": "url for the image",
+      "artistName": "name of the creator",
+      "title": "title of the image entry"
     }
   ]
 }
@@ -80,30 +107,30 @@ res = {
   "artistName": "unique username of the creator of the entry",
   "artistId": "(number) the creator's ID number",
   "description": "a text description of the image",
-  "score": "(number) the total number of votes by artists"
+  "score": "(number) the total number of likes by artists"
 }
 ```
 
-DELETE `/entries/:id` (delete a single entry)
+*DELETE `/entries/:id` (delete a single entry)
 
-GET `/artist/:id` (get all entries for a given artist)
+GET `/artists/:id` (get all entries for a given artist)
 ```js
 res = {
   "id": "(number) ID number for the artist/user"
+  "username": "unique artist name",
   "entries": [
     {
       "id": "(number) globally unique entry ID number",
-      "url": "url for the image"
+      "url": "url for the image",
+      "title": "title of image entry"
     }
   ]
   "likes": [
-    "(number) ID number of upvoted entry"
+    "(number) ID number of each entry liked by artist"
   ]
 }
 ```
 
-DELETE `/account` (remove artist account from database)
+*POST `/entries/:id/like` (like a post)
 
-# TODO
-
-- how are votes going to work?
+*DELETE `/entries/:id/like` (unlike a post)

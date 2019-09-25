@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken');
 
-const secrets = require('./secrets');
+const secrets = require('../config/secrets');
 
 
 
 function generateToken(user) {
 
     const payload = {
-      username_id: user.id, // standard claim = sub
+      id: user.id,
       username: user.username
     };
 
-  
+
     const options = {
       expiresIn: '1d',
     };
-  
+
     return jwt.sign(payload, secrets.jwtSecret, options);
   }
 
