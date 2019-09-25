@@ -1,21 +1,21 @@
 const db = require('./dbConfig');
 
 function findAll() {
-    return db.select('posts.*', 'users.username')
-        .from('posts')
-        .leftJoin('users', 'users.id', 'posts.username_id')
+    return db.select('entries.*', 'artists.username')
+        .from('entries')
+        .leftJoin('artists', 'artists.id', 'entries.artist')
         .orderBy('id');
 
 }
 
 function findBy(filter) {
-    return db('posts').where(filter).first();
+    return db('entries').where(filter).first();
 }
 
-function add(post) {
-    return db('posts').insert(post, 'id')
+function add(entry) {
+    return db('entries').insert(entry, 'id')
         .then( ids => {
-            return db('posts')
+            return db('entries')
                 .where({id: ids[0]})
                 .first();
         }
@@ -23,7 +23,7 @@ function add(post) {
 }
 
 function update(id, changes) {
-    return db('posts')
+    return db('entries')
         .where(id)
         .update(changes)
         .then(count => {
@@ -35,13 +35,13 @@ function update(id, changes) {
 }
 
 function remove(id) {
-    return db('posts')
+    return db('entries')
         .where(id)
         .del();
 }
 
-function byUser(username_id) {
-    return db('posts').where({ username_id });
+function byArtist(artist) {
+    return db('entries').where({ artist });
 }
 
 module.exports = {
@@ -50,5 +50,5 @@ module.exports = {
     add,
     update,
     remove,
-    byUser
+    byArtist
 };

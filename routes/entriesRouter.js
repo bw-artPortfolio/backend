@@ -6,24 +6,13 @@ const secrets = require('../config/secrets');
 
 const entryModel = require('../database/entryModel');
 
-/*
-  "id": 1,
-  "username_id": 1,
-  "description": "dangerous activity window mix periodic word noise squirrel voyage",
-  "title": "Hippo",
-  "imgURL": "https://cdna.artstation.com/p/assets/images/images/013/855/676/large/guodong-zhao-7.jpg",
-  "votes": 0,
-  "username": "alice"
-*/
-
-
 router.get('/entries', async (req, res) => {
     try {
         const entries = await entryModel.findAll();
         formatted = entries.map(entry => {
             return {
                 id: entry.id,
-                url: entry.imgURL,
+                url: entry.url,
                 artistName: entry.username,
                 title: entry.title
             };
@@ -43,9 +32,9 @@ router.get('/entries/:id', async (req, res) => {
         if(entry) {
             const formatted = {
                 id: entry.id,
-                url: entry.imgURL,
+                url: entry.url,
                 artistName: entry.username,
-                artistId: entry.username_id,
+                artistId: entry.id,
                 title: entry.title,
                 description: entry.description,
                 score: "unimplemented for now"
@@ -68,52 +57,55 @@ router.put('/entries/:id', checkCreds, async (req, res) => {
 
     const {id} = req.params;
     const changes = req.body;
-    const usernameId = req.user.username_id;
+    const user = req.user;
+    console.log(user)
 
-    if(changes.id || changes.username_id) {
-        res.status(403).json({errorMessage: "Not allowed to change ids" })
-    }
+    // if(changes.id || changes.id) {
+    //     res.status(403).json({errorMessage: "Not allowed to change ids" })
+    // }
 
-    if(!changes.description && !changes.imgURL && !changes.title && !changes.category && !timestamp) {
+    if(!changes.description && !changes.url && !changes.title) {
         res.status(400).json({errorMessage: "No field to update"})
     }
 
     try {
         const entry = await entryModel.findBy({id})
+        console.log('user', user)
+        console.log('entry', entry)
 
         if(entry) {
-            if(entry.username_id === usernameId) {
+            if(entry.artist === user.id) {
                 try {
                     const modifiedEntry = await entryModel.update({id}, changes)
                     if(modifiedEntry) {
-                        res.status(200).json(modifiedEntry)
+                        res.status(202).json(modifiedEntry)
                     }
                     else {
                         res.status(500).json({errorMessage: 'entry to update not found'});
                     }
                 }
-                catch {
+                catch (err) {
                     res.status(500).json({errorMessage: "There was a problem updating the entry"});
                 }
             }
             else {
-                res.status(403).json("errorMessage: Not allowed to update")
+                res.status(403).json({errorMessage: "Not allowed to update"});
             }
         }
         else {
             res.status(404).json({errorMessage: 'Entry not found'});
         }
     }
-    catch {
+    catch (err) {
         res.status(500).json({message: "There was a problem finding the entry"});
     }
 
-})
+});
 
 router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
     const entry = {
-        username_id: req.user.username_id,
-        imgURL: req.body.imgURL,
+        id: req.user.id,
+        url: req.body.url,
         description: req.body.description,
         title: req.body.title,
         category: req.body.category,
@@ -134,13 +126,13 @@ router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
 router.delete('/entries/:id', checkCreds, async (req, res) => {
 
     const {id} = req.params;
-    const usernameId = req.user.username_id;
+    const usernameId = req.user.id;
 
     try {
         const entry = await entryModel.findBy({id})
 
         if (entry) {
-            if(entry.username_id === usernameId) {
+            if(entry.id === usernameId) {
                 try {
                     const count = await entryModel.remove({id})
                     if(count>0) {
@@ -172,7 +164,7 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
 //Middleware to validate if entry info is existing
 function validateEntryInfo(req, res, next) {
     const entry = req.body;
-    if(entry.description && entry.imgURL && entry.title && entry.category && entry.timestamp) {
+    if(entry.description && entry.url && entry.title && entry.category && entry.timestamp) {
         next();
     }
     else {
@@ -190,7 +182,7 @@ function checkCreds(req, res, next) {
                 res.status(401).json({ message: 'Invalid Credentials' });
             }
             else {
-                req.user = {username_id: decodedToken.username_id, username: decodedToken.username }
+                req.user = {id: decodedToken.id, username: decodedToken.username }
                 next();
             }
         })
