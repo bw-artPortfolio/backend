@@ -165,7 +165,6 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
             if(entry.artist === usernameId) {
                 try {
                     const count = await entryModel.remove(id);
-                    console.log(count)
                     if(count>0) {
                         res.status(204).json({message: `${count} entry(s) deleted`})
                     }
