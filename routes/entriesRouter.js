@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const jwt = require('jsonwebtoken');
-const secrets = require('../config/secrets');
 
 const entryModel = require('../database/entryModel');
+
+//Auth middleware
+const authenticate = require('../utils/authenticate');
 
 //Tested
 router.get('/entries', async (req, res) => {
@@ -54,7 +55,7 @@ router.get('/entries/:id', async (req, res) => {
 
 
 //Tested
-router.put('/entries/:id', checkCreds, async (req, res) => {
+router.put('/entries/:id', authenticate, async (req, res) => {
 
     const {id} = req.params;
     const changes = req.body;
@@ -103,7 +104,7 @@ router.put('/entries/:id', checkCreds, async (req, res) => {
 
 });
     //Tested 
-router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
+router.post('/entries', validateEntryInfo, authenticate, async (req, res) => {
     const entry = {
         artist: req.user.id,
         url: req.body.url,
@@ -122,7 +123,7 @@ router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
 })
 
 //Tested
-router.delete('/entries/:id', checkCreds, async (req, res) => {
+router.delete('/entries/:id', authenticate, async (req, res) => {
 
     const {id} = req.params;
     const usernameId = req.user.id;
@@ -171,24 +172,6 @@ function validateEntryInfo(req, res, next) {
     }
 }
 
-//Middleware to check if user is logged in
-function checkCreds(req, res, next) {
-    const token = req.headers.authorization;
 
-    if(token) {
-        jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
-            if(err) {
-                res.status(401).json({ message: 'Invalid Credentials' });
-            }
-            else {
-                req.user = {id: decodedToken.id, username: decodedToken.username }
-                next();
-            }
-        })
-    }
-    else {
-        res.status(400).json({ message: 'No token provided' });
-    }
-}
 
 module.exports = router;

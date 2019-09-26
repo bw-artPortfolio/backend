@@ -7,6 +7,9 @@ const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 const artistModel = require('../database/artistModel');
 
+//Auth middleware
+const authenticate = require('../utils/authenticate');
+
 //Registration
 
 router.post('/register', checkCreds, async (req, res) => {
@@ -60,6 +63,24 @@ router.post('/login', async (req, res) => {
             "errorMessage": "Server error. Try again."
         });
     }
+});
+
+//Delete
+
+router.delete('/', authenticate, async (req, res) => {
+    
+    const id = req.user.id;
+    
+    try {
+        console.log("Removed");
+        const removedUser = await artistModel.remove(id);
+        res.status(200).json({ removedUser });
+    }
+    catch (err){
+        console.warn(err);
+        res.status(500).json({"errorMessage": "Server error. Try again."})
+    } 
+
 });
 
 //Middleware that ensures creds are given in register
