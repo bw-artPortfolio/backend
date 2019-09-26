@@ -15,7 +15,12 @@ function add(artist) {
         );
 }
 
+function findAllLimited() {
+    return db('artists').select('id', 'username');
+}
+
 module.exports = {
     add,
     findBy,
+    findAllLimited
 };

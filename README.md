@@ -20,9 +20,7 @@ note: An entry's ID number is unique among all entries from all artists, but is 
 
 # API
 
-(`*` means unfinished)
-
-*POST `account/register` (get an account for an artist)
+POST `account/register` (get an account for an artist)
 ```js
 body = {
   username,
@@ -30,7 +28,7 @@ body = {
 }
 ```
 
-*POST `account/login`
+POST `account/login`
 ```js
 body = {
   username,
@@ -42,7 +40,7 @@ res = {
 }
 ```
 
-*DELETE `/account` (remove artist account from database)
+DELETE `/account` (remove artist account from database)
 
 DEPRECATED!! POST `/register` (get an account for an artist)
 ```js
@@ -64,7 +62,7 @@ res = {
 }
 ```
 
-*POST `/entries` (art post)
+POST `/entries` (art post)
 ```js
 body = {
   "url": "the url of the image",
@@ -73,15 +71,6 @@ body = {
 }
 res = {
   "id": "(number) the globally unique ID number for your entry"
-}
-```
-
-PUT `/entries/:id` (modify art post)
-```js
-body = {
-  "url": "(optional)",
-  "title": "(optional)",
-  "description": "(optional)"
 }
 ```
 
@@ -111,7 +100,28 @@ res = {
 }
 ```
 
-*DELETE `/entries/:id` (delete a single entry)
+PUT `/entries/:id` (modify art post)
+```js
+body = {
+  "url": "(optional)",
+  "title": "(optional)",
+  "description": "(optional)"
+}
+```
+
+DELETE `/entries/:id` (delete a single entry)
+
+GET `/artists` (get names of all artists)
+```js
+res = {
+  "artists": [
+    {
+      id,
+      username
+    }
+  ]
+}
+```
 
 GET `/artists/:id` (get all entries for a given artist)
 ```js
@@ -131,6 +141,6 @@ res = {
 }
 ```
 
-*POST `/entries/:id/like` (like a post)
+POST `/entries/:id/like` (like a post)
 
-*DELETE `/entries/:id/like` (unlike a post)
+DELETE `/entries/:id/like` (unlike a post)
