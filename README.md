@@ -42,26 +42,6 @@ res = {
 
 DELETE `/account` (remove artist account from database)
 
-DEPRECATED!! POST `/register` (get an account for an artist)
-```js
-body = {
-  username,
-  password
-}
-```
-
-DEPRECATED!! POST `/login`
-```js
-body = {
-  username,
-  password
-}
-res = {
-  "id": "(number) the ID number for the user",
-  "token": "authentication token for the session"
-}
-```
-
 POST `/entries` (art post)
 ```js
 body = {
