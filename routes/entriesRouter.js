@@ -7,6 +7,7 @@ const secrets = require('../config/secrets');
 const entryModel = require('../database/entryModel');
 const likeModel = require('../database/likeModel');
 
+//Tested
 router.get('/entries', async (req, res) => {
     try {
         const entries = await entryModel.findAll();
@@ -53,6 +54,7 @@ router.delete('/entries/:id/like', checkCreds, async (req, res) => {
     }
 });
 
+//Tested
 router.get('/entries/:id', async (req, res) => {
     const {id} = req.params;
     try {
@@ -81,7 +83,7 @@ router.get('/entries/:id', async (req, res) => {
 });
 
 
-
+//Tested
 router.put('/entries/:id', checkCreds, async (req, res) => {
 
     const {id} = req.params;
@@ -129,28 +131,26 @@ router.put('/entries/:id', checkCreds, async (req, res) => {
     }
 
 });
-
+    //Tested
 router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
     const entry = {
-        id: req.user.id,
+        artist: req.user.id,
         url: req.body.url,
         description: req.body.description,
         title: req.body.title,
-        category: req.body.category,
-        timestamp: req.body.timestamp,
-        votes: 0
     }
 
     try {
         const newEntry = await entryModel.add(entry, 'id');
         res.status(201).json({newEntry});
     }
-    catch (err) {
+    catch(err) {
+        console.log(err)
         res.status(500).json({"errorMessage": "Encountered issue adding your entry"})
     }
 })
 
-
+//Tested
 router.delete('/entries/:id', checkCreds, async (req, res) => {
 
     const {id} = req.params;
@@ -160,7 +160,7 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
         const entry = await entryModel.findBy({id})
 
         if (entry) {
-            if(entry.id === usernameId) {
+            if(entry.artist === usernameId) {
                 try {
                     const count = await entryModel.remove({id})
                     if(count>0) {
@@ -192,7 +192,7 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
 //Middleware to validate if entry info is existing
 function validateEntryInfo(req, res, next) {
     const entry = req.body;
-    if(entry.description && entry.url && entry.title && entry.category && entry.timestamp) {
+    if( entry.url && entry.description && entry.title) {
         next();
     }
     else {
