@@ -37,7 +37,7 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
     return knex.schema
-        .dropTableIfExists('artists')
+        .dropTableIfExists('likes')
         .dropTableIfExists('entries')
-        .dropTableIfExists('likes');
+        .dropTableIfExists('artists');
 };
