@@ -20,6 +20,8 @@ note: An entry's ID number is unique among all entries from all artists, but is 
 
 # API
 
+## account
+
 POST `account/register` (get an account for an artist)
 ```js
 body = {
@@ -41,6 +43,8 @@ res = {
 ```
 
 DELETE `/account` (remove artist account from database)
+
+## entries
 
 POST `/entries` (art post)
 ```js
@@ -91,6 +95,8 @@ body = {
 
 DELETE `/entries/:id` (delete a single entry)
 
+## artists
+
 GET `/artists` (get names of all artists)
 ```js
 res = {
@@ -120,6 +126,8 @@ res = {
   ]
 }
 ```
+
+## likes
 
 POST `/entries/:id/like` (like a post)
 
