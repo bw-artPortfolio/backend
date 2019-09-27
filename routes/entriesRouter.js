@@ -133,16 +133,18 @@ router.put('/entries/:id', checkCreds, async (req, res) => {
 });
     //Tested
 router.post('/entries', validateEntryInfo, checkCreds, async (req, res) => {
-    const entry = {
-        artist: req.user.id,
-        url: req.body.url,
-        description: req.body.description,
-        title: req.body.title,
+    const given = req.body;
+    let entry = { url: given.url, artist: req.user.id };
+    if (given.description) {
+        entry.description = given.description;
+    }
+    if (given.title) {
+        entry.title = given.title;
     }
 
     try {
         const newEntry = await entryModel.add(entry, 'id');
-        res.status(201).json({newEntry});
+        res.status(201).json({ id: newEntry.id });
     }
     catch(err) {
         console.log(err)
@@ -157,14 +159,14 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
     const usernameId = req.user.id;
 
     try {
-        const entry = await entryModel.findBy({id})
+        const entry = await entryModel.findBy({id});
 
         if (entry) {
             if(entry.artist === usernameId) {
                 try {
-                    const count = await entryModel.remove({id})
+                    const count = await entryModel.remove(id);
                     if(count>0) {
-                        res.status(200).json({message: `${count} entry(s) deleted`})
+                        res.status(204).json({message: `${count} entry(s) deleted`})
                     }
                     else {
                         res.status(500).json({errorMessage: 'Entry does not exist'});
@@ -192,7 +194,7 @@ router.delete('/entries/:id', checkCreds, async (req, res) => {
 //Middleware to validate if entry info is existing
 function validateEntryInfo(req, res, next) {
     const entry = req.body;
-    if( entry.url && entry.description && entry.title) {
+    if(entry.url) {
         next();
     }
     else {

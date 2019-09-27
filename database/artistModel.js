@@ -5,7 +5,6 @@ function findBy(filter) {
 }
 
 function add(artist) {
-    console.log("in Model:");
     return db('artists').insert(artist, 'id')
         .then(ids => {
             return db('artists')
