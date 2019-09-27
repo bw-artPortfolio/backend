@@ -4,7 +4,7 @@ exports.up = function(knex) {
         .createTable('artists', (tbl) => {
             tbl.increments();
             tbl.string('username', 20).notNullable().unique();
-            tbl.string('password', 56).notNullable();
+            tbl.string('password').notNullable();
             tbl.string('email', 32).unique();
         })
 
