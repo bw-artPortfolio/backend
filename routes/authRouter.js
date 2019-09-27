@@ -14,7 +14,7 @@ router.post('/register', checkCreds, async (req, res) => {
     const hash = bcrypt.hashSync(password, 10);
     const validUser = { username, password: hash, email };
     try {
-        console.log("Registration successful @", Date.now())
+        // console.log("Registration successful @", Date.now())
         const addedUser = await artistModel.add(validUser);
         res.status(201).json({
             username: addedUser.username,
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
         });
         if (user && bcrypt.compareSync(password, user.password)) {
             token = generateToken(user);
-            console.log("Login successful @", Date.now())
+            // console.log("Login successful @", Date.now())
             res.status(200).json({
                 username: user.username,
                 id: user.id,
@@ -69,7 +69,7 @@ function checkCreds(req, res, next) {
     if (body.username && body.password) {
         next()
     } else {
-        console.warn('MIDDLEWARE FAILURE - "checkCreds"')
+        // console.warn('MIDDLEWARE FAILURE - "checkCreds"')
         res.status(422).json({
             "message": "Missing required fields. Try again."
         });

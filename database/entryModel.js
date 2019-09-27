@@ -35,9 +35,9 @@ function update(id, changes) {
 }
 
 function remove(id) {
-    return db('entries')
-        .where(id)
-        .del();
+    return db('entries').where({id}).del();
+    // return db('likes').where({ entry: id}).del()
+    //     .then(() => db('entries').where({id}).del());
 }
 
 function byArtist(artist) {

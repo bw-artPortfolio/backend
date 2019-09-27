@@ -14,7 +14,8 @@ exports.up = function(knex) {
                 .unsigned()
                 .notNullable()
                 .references('id')
-                .inTable('artists');
+                .inTable('artists')
+                .onDelete('CASCADE');
             tbl.string('description');
             tbl.string('title', 26).notNullable();
             tbl.string('url').notNullable();
@@ -24,12 +25,14 @@ exports.up = function(knex) {
                 .unsigned()
                 .notNullable()
                 .references('id')
-                .inTable('artists');
+                .inTable('artists')
+                .onDelete('CASCADE');
             tbl.integer('entry')
                 .unsigned()
                 .notNullable()
                 .references('id')
-                .inTable('entries');
+                .inTable('entries')
+                .onDelete('CASCADE');
             tbl.primary(['artist', 'entry']);
         });
 
